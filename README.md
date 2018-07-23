@@ -2,9 +2,11 @@
 Department Wise Traffic Analysis On Streaming Data Coming from Web Servers
 
 
-========================================================================================================
+===========================================================================
+
 			 LifeCycle of Streaming Analytics
 			  ================================
+			  
 	1. Get Data from source (using Flume and/or Kafka)
 	2. Process Data (using Hadoop and Spark)
 	3. Store processed data in target (HDFS and/or RDBMS)
@@ -30,11 +32,13 @@ Getting Started with the Slution:
 vi FlumeToKafkaSinkAndHdfs.conf
 **********************************
 #defining source, sink and channel
+
 a2.sources = wl
 a2.sinks = kafka, k1 
 a2.channels = mem, hd
 
 #Describing the source to read data from.
+
 a2.sources.wl.type = exec
 a2.sources.wl.command = tail -F /opt/gen_logs/logs/access.log
 
@@ -45,21 +49,25 @@ a2.sinks.k1.hdfs.fileType = DataStream
 a2.sinks.k1.hdfs.writeFormat = Text
 
 #Describing Kafka sink 
+
 a2.sinks.kafka.type = org.apache.flume.sink.kafka.KafkaSink
 a2.sinks.kafka.brokerList = localhost:9999
 a2.sinks.kafka.topic = testTopic
 
 #Defining a channel which buffers events in memory for HDFS
+
 a2.channels.hd.type = memory
 a2.channels.hd.capacity = 500
 a2.channels.hd.transactionCapacity = 100
 
 #Defining a channel which buffers events in memory for Kafka
+
 a2.channels.mem.type = memory
 a2.channels.mem.capacity = 500
 a2.channels.mem.transactionCapacity = 100
 
 #Binding the source and the sinks to the channel
+
 a2.sources.wl.channels = mem,hd
 a2.sinks.kafka.channel = mem
 a2.sinks.k1.channel = hd
